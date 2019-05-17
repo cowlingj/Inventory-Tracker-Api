@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
     title: ${title}
     description: ${description}
-    version: 0.0.7
+    version: 0.0.8
 servers:
     - url: "/"
 security:
@@ -33,9 +33,16 @@ paths:
                     content:
                         "application/json":
                             schema:
-                                type: array
-                                items:
-                                    "$ref": "#/components/schemas/Item"
+                              type: object
+                              required:
+                                  - items
+                              properties:
+                                  next:
+                                      type: string
+                                  items:
+                                      type: array
+                                      items:
+                                          "$ref": "#/components/schemas/Item"
                 "401":
                     "$ref": "#/definitions/NoApiKey"
                 "413":
