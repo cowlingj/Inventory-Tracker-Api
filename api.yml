@@ -3,7 +3,7 @@ openapi: 3.0.1
 info:
     title: ${title}
     description: ${description}
-    version: 0.0.8
+    version: 0.0.9
 servers:
     - url: "/"
 security:
@@ -136,6 +136,30 @@ paths:
                 passthroughBehavior: when_no_templates
                 type: aws_proxy
                 uri: "${list_delete_uri}"
+    "/list/{id}":
+        get:
+            description: returns a single item
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            security:
+                - ApiKey: []
+            responses:
+                "401":
+                    "$ref": "#/definitions/NoApiKey"
+                "200":
+                    description: successfully returned items in the list
+                    content:
+                        "application/json":
+                            schema:
+                                $ref: "#/definitions/Item"
+            x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri: "${list_get_item_uri}"
     "/report":
         get:
             description: returns a report on the list over a given period
